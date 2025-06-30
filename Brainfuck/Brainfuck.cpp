@@ -26,14 +26,13 @@
 
 #include "Brainfuck.h"
 
-const std::string copyright_msg = {
+const std::string copyright_msg =
     "Copyright (c) 2025 Stefanos Stefanidis. All rights reserved.\n\n"
     "This is free software, and you are welcome to redistribute it under the terms of the\n"
     "GNU General Public License.\n"
     "This program comes with ABSOLUTELY NO WARRANTY; without even the implied warranty of\n"
     "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License\n"
-    "for more details.\n\n"
-};
+    "for more details.\n\n";
 
 int
 main(int argc, char **argv)
