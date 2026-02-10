@@ -37,13 +37,14 @@ const std::string copyright_msg =
 int
 main(int argc, char **argv)
 {
+    uint32_t array_size;
     Brainfuck bf;
 
     std::cout << "Brainfuck interpreter for Windows (built " << __DATE__ << " " << __TIME__ << ")" << std::endl;
     std::cout << copyright_msg;
 
-    if (argc != 2) {
-        std::cout << "Usage: " << argv[0] << " program" << std::endl;
+    if (argc < 2 || argc > 3) {
+        std::cout << "Usage: " << argv[0] << " program [array size]" << std::endl;
         return 1;
     }
 
@@ -54,16 +55,35 @@ main(int argc, char **argv)
         return 1;
     }
 
-    bf.BrainfuckInit();
+	if (argc == 3) {
+        try {
+            array_size = std::stoul(argv[2]);
+            if (array_size == 0) {
+                std::cout << "Error: Array size must be greater than zero." << std::endl;
+                bf.bf_file.close();
+                return 1;
+            }
+        } catch (const std::exception& e) {
+            std::cout << "Error: Invalid array size. Please provide a valid positive integer." << std::endl;
+            bf.bf_file.close();
+            return 1;
+        }
+    } else
+        array_size = BF_ARRAY_SIZE;
+
+    bf.BrainfuckInit(array_size);
 
     if (!bf.BrainfuckRead()) {
         bf.bf_file.close();
+		delete[] bf.bf_mem;
         return 1;
     }
 
     bf.BrainfuckInterpret();
 
     bf.bf_file.close();
+	delete[] bf.bf_mem;
+
     return 0;
 }
 
@@ -71,12 +91,15 @@ main(int argc, char **argv)
  * Initialize Brainfuck array and data pointer.
  */
 void
-Brainfuck::BrainfuckInit(void)
+Brainfuck::BrainfuckInit(uint32_t ArraySize)
 {
     int i;
 
+	// Allocate memory for Brainfuck's array.
+	bf_mem = new uint8_t[ArraySize];
+
     // Initialize Brainfuck's array.
-    for (i = 0; i < BF_ARRAY_SIZE; i++)
+    for (i = 0; i < ArraySize; i++)
         bf_mem[i] = 0;
 
     // Initialize Brainfuck's data pointer.

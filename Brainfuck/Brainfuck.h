@@ -42,13 +42,14 @@
 
 class Brainfuck {
 	public:
-		uint8_t bf_mem[BF_ARRAY_SIZE];	// Brainfuck's memory.
+		uint8_t *bf_mem;	// Brainfuck's memory.
 		uint8_t* bf_data_ptr;		// Data pointer.
 		size_t bf_pc;		// Program counter.
 		std::string bf_program;		// Program data as ASCII characters.
 		std::ifstream bf_file;		// File stream.
+		uint32_t bf_array_size;	// Size of Brainfuck's array.
 
-		void BrainfuckInit(void);	// Initialize Brainfuck array and data pointer.
+		void BrainfuckInit(uint32_t ArraySize);	// Initialize Brainfuck array and data pointer.
 		bool BrainfuckRead(void);	// Read an input text file.
 		void BrainfuckInterpret(void);	// Interpret Brainfuck code.
 	private:
@@ -63,11 +64,10 @@ class Brainfuck {
 			(*bf_data_ptr)--;
 		}
 		bool BrainfuckMoveCellRight(void) {
-			if (bf_data_ptr + 1 >= bf_mem + BF_ARRAY_SIZE) {
+			if (bf_data_ptr + 1 >= bf_mem + bf_array_size) {
 				std::cout << "Error: Array exceeded (PC: " << bf_pc << ")" << std::endl;
 				return false;
-			}
-			else {
+			} else {
 				bf_data_ptr++;
 				return true;
 			}
@@ -76,8 +76,7 @@ class Brainfuck {
 			if (bf_data_ptr - 1 < bf_mem) {
 				std::cout << "Error: Array underflow (PC: " << bf_pc << ")" << std::endl;
 				return false;
-			}
-			else {
+			} else {
 				bf_data_ptr--;
 				return true;
 			}
