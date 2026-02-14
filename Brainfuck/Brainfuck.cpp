@@ -1,6 +1,6 @@
 //
 // Brainfuck interpreter for Microsoft Windows.
-// Copyright (c) 2025 Stefanos Stefanidis. All rights reserved.
+// Copyright (c) 2025, 2026 Stefanos Stefanidis. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by the
@@ -27,7 +27,7 @@
 #include "Brainfuck.h"
 
 const std::string copyright_msg =
-    "Copyright (c) 2025 Stefanos Stefanidis. All rights reserved.\n\n"
+    "Copyright (c) 2025, 2026 Stefanos Stefanidis. All rights reserved.\n\n"
     "This is free software, and you are welcome to redistribute it under the terms of the\n"
     "GNU General Public License.\n"
     "This program comes with ABSOLUTELY NO WARRANTY; without even the implied warranty of\n"
@@ -104,6 +104,9 @@ Brainfuck::BrainfuckInit(uint32_t ArraySize)
 
     // Initialize Brainfuck's data pointer.
     bf_data_ptr = bf_mem;
+
+	// Set Brainfuck's array size.
+	bf_array_size = ArraySize;
 }
 
 bool
